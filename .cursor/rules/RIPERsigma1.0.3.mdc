@@ -33,28 +33,29 @@ alwaysApply: true
 𝕆ᵣₑₐₗ = {modify_files, write_code, delete_content, refactor}
 𝕆ᵥᵢᵣₜᵤₐₗ = {suggest_ideas, explore_concepts, evaluate_approaches}
 𝕆ₒᵦₛₑᵣᵥₑ = {read_files, analyze_content, identify_patterns}
+𝕆ᵢₘₚₗ = {generate_implementation_code} // Specifically generating final, executable code blocks
 
-𝕊(Ω₁) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ~, 𝕆ᵣₑₐₗ: ✗} // Research
-𝕊(Ω₂) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ✓, 𝕆ᵣₑₐₗ: ✗} // Innovate
-𝕊(Ω₃) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ✓, 𝕆ᵣₑₐₗ: ~} // Plan
-𝕊(Ω₄) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ~, 𝕆ᵣₑₐₗ: ✓} // Execute
-𝕊(Ω₅) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ~, 𝕆ᵣₑₐₗ: ✗} // Review
+𝕊(Ω₁) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ~, 𝕆ᵣₑₐₗ: ✗, 𝕆ᵢₘₚₗ: ✗} // Research
+𝕊(Ω₂) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ✓, 𝕆ᵣₑₐₗ: ✗, 𝕆ᵢₘₚₗ: ✗} // Innovate
+𝕊(Ω₃) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ✓, 𝕆ᵣₑₐₗ: ~, 𝕆ᵢₘₚₗ: ✗} // Plan (no final code)
+𝕊(Ω₄) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ~, 𝕆ᵣₑₐₗ: ✓, 𝕆ᵢₘₚₗ: ✓} // Execute
+𝕊(Ω₅) = {𝕆ₒᵦₛₑᵣᵥₑ: ✓, 𝕆ᵥᵢᵣₜᵤₐₗ: ~, 𝕆ᵣₑₐₗ: ✗, 𝕆ᵢₘₚₗ: ✗} // Review
 
 ## Ω RIPER Modes with Permission Enforcement
 
-Ω₁ = 🔍R ⟶ ℙ(Ω₁) ⟶ +𝕋[0:3] -𝕋[4:15] ⟶ [MODE: RESEARCH]+findings
+Ω₁ = 🔍R ⟶ ℙ(Ω₁) ⟶ +𝕋[0:3] -𝕋[4:15] -[generate_implementation_code] ⟶ [MODE: RESEARCH]+findings
   ↪ 🔄(/research, /r) ⟶ update(𝕄[2,3]) ⟶ enforce_permissions(𝕊(Ω₁))
 
-Ω₂ = 💡I ⟶ ℙ(Ω₂) ⟶ +𝕋[4:6] -𝕋[8:15] ⟶ [MODE: INNOVATE]+possibilities
+Ω₂ = 💡I ⟶ ℙ(Ω₂) ⟶ +𝕋[4:6] -𝕋[8:15] -[generate_implementation_code] ⟶ [MODE: INNOVATE]+possibilities
   ↪ 🔄(/innovate, /i) ⟶ update(𝕄[3]) ⟶ enforce_permissions(𝕊(Ω₂))
 
-Ω₃ = 📝P ⟶ ℙ(Ω₃) ⟶ +𝕋[7:9] -𝕋[10:15] ⟶ [MODE: PLAN]+checklist₁₋ₙ
+Ω₃ = 📝P ⟶ ℙ(Ω₃) ⟶ +𝕋[7:9] -𝕋[10:15] -[generate_implementation_code] ⟶ [MODE: PLAN]+checklist₁₋ₙ
   ↪ 🔄(/plan, /p) ⟶ update(𝕄[3,4]) ⟶ enforce_permissions(𝕊(Ω₃))
 
-Ω₄ = ⚙️E ⟶ ℙ(Ω₄) ⟶ +𝕋[10:12] -[improve,create,deviate] ⟶ [MODE: EXECUTE]+progress
+Ω₄ = ⚙️E ⟶ ℙ(Ω₄) ⟶ +𝕋[10:12] -[improve,deviate] ⟶ [MODE: EXECUTE]+progress // Removed create from exclude list as O_impl covers code gen
   ↪ 🔄(/execute, /e) ⟶ update(𝕄[3,4]) ⟶ enforce_permissions(𝕊(Ω₄))
 
-Ω₅ = 🔎RV ⟶ ℙ(Ω₅) ⟶ +𝕋[13:15] -[modify,improve] ⟶ [MODE: REVIEW]+{✅|⚠️}
+Ω₅ = 🔎RV ⟶ ℙ(Ω₅) ⟶ +𝕋[13:15] -[modify,improve,generate_implementation_code] ⟶ [MODE: REVIEW]+{✅|⚠️}
   ↪ 🔄(/review, /rev) ⟶ update(𝕄[3,4]) ⟶ enforce_permissions(𝕊(Ω₅))
 
 ## 🛡️ Code Protection System
